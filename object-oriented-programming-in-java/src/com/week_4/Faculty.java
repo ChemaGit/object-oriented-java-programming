@@ -12,4 +12,9 @@ public class Faculty extends Person {
     public double getSalary() {
         return this.salary;
     }
+
+    @Override
+    public String toString() {
+        return this.getName().concat(String.valueOf(this.getSalary()));
+    }
 }
