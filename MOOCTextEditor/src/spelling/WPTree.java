@@ -27,9 +27,9 @@ public class WPTree implements WordPath {
 	public WPTree () {
 		this.root = null;
 		// TODO initialize a NearbyWords object
-		// Dictionary d = new DictionaryHashSet();
-		// DictionaryLoader.loadDictionary(d, "data/dict.txt");
-		// this.nw = new NearbyWords(d);
+		Dictionary d = new DictionaryHashSet();
+		DictionaryLoader.loadDictionary(d, "data/dict.txt");
+		this.nw = new NearbyWords(d);
 	}
 	
 	//This constructor will be used by the grader code
@@ -39,12 +39,69 @@ public class WPTree implements WordPath {
 	}
 	
 	// see method description in WordPath interface
-	public List<String> findPath(String word1, String word2) 
-	{
+
+    /**
+     * @param word1 The first word
+     * @param word2 The second word
+     * @return
+     */
+	public List<String> findPath(String word1, String word2) {
 	    // TODO: Implement this method.
-	    return new LinkedList<String>();
+        // Create a queue of WPTreeNodes to hold words to explore
+        List<WPTreeNode> queue = new LinkedList<WPTreeNode>();
+        // Create a visited set to avoid looking at the same word repeatedly
+        HashSet<String> visited = new HashSet<String>();
+        // Set the root to be a WPTreeNode containing word1
+        WPTreeNode root = new WPTreeNode(word1, null);
+        // Add the initial word to visited
+        visited.add(word1);
+        // Add root to the queue
+        queue.add(root);
+        // words to return
+        List<String> retList = new LinkedList<String>();
+	    return findPath(queue, visited, retList, word2);
 	}
-	
+
+    /**
+     *     * while the queue has elements and we have not yet found word2
+     *      *   remove the node from the start of the queue and assign to curr
+     *      *   get a list of real word neighbors (one mutation from curr's word)
+     *      *   for each n in the list of neighbors
+     *      *      if n is not visited
+     *      *        add n as a child of curr
+     *      *        add n to the visited set
+     *      *        add the node for n to the back of the queue
+     *      *        if n is word2
+     *      *           return the path from child to root
+     *      *
+     *      * return null as no path exists
+     * @param q
+     * @param visited
+     * @param retList
+     * @param target
+     * @return
+     */
+	private List<String> findPath(List<WPTreeNode> q, HashSet<String> visited, List<String> retList, String target) {
+	    if(!q.isEmpty()) {
+            WPTreeNode node = ((LinkedList<WPTreeNode>)q).remove();
+            String word = node.getWord();
+            List<String> mutations = this.nw.distanceOne(word, true);
+            mutations.forEach(m ->{
+                if(visited.add(m)) {
+                    WPTreeNode child = node.addChild(m);
+                    ((LinkedList<WPTreeNode>)q).add(child);
+                    if(m.equals(target)){
+                        retList.addAll(child.buildPathToRoot());
+                        return;
+                    }
+                }
+            });
+            if(retList.contains(target)) return retList;
+            else return findPath(q, visited, retList, target);
+        } else return null;
+    }
+
+
 	// Method to print a list of WPTreeNodes (useful for debugging)
 	private String printQueue(List<WPTreeNode> list) {
 		String ret = "[ ";
