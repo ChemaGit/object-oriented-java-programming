@@ -32,6 +32,10 @@ public class MapGraph {
 	private int numEdges;
 
 	private int countNodes = 0;
+
+	// Project: Week 6 -- REQUIRED EXTENSION
+	// private variable for to not recalculate routes if we already did
+	private CacheRoutes routesStored;
 	
 	/** 
 	 * Create a new empty MapGraph 
@@ -40,6 +44,25 @@ public class MapGraph {
 		// TODO: Implement in this constructor in WEEK 3
 		vertices = new HashMap<GraphNode, List<GraphEdge>>();
 		numEdges = 0;
+
+		// Project: Week 6 -- REQUIRED EXTENSION
+		routesStored = new CacheRoutes();
+	}
+
+	/**
+	 * Project: Week 6 -- REQUIRED EXTENSION
+	 *
+	 * Method that recieves a start and goal GeographicPoint
+	 * and returns a path between start and goal or null if path doesn't exist.
+	 * @param start
+	 * @param goal
+	 * @return a path ArrayList<GeographicPoint> or null
+	 * @throws IllegalArgumentException
+	 */
+	private List<GeographicPoint> getRoute (GeographicPoint start, GeographicPoint goal) throws IllegalArgumentException{
+		if(start == null || goal == null) throw  new IllegalArgumentException("Some of the arguments are null");
+
+		return this.routesStored.getRoute(start, goal);
 	}
 	
 	/**
@@ -157,6 +180,14 @@ public class MapGraph {
 	 * // If we get here then there's no path
 	 */
 	public List<GeographicPoint> bfs(GeographicPoint start, GeographicPoint goal, Consumer<GeographicPoint> nodeSearched) {
+		// Week 6 -- REQUIRED EXTENSION
+		// If the route already exists, return pathStored
+		List<GeographicPoint> pathStored = getRoute(start, goal);
+		if(pathStored != null) {
+			pathStored.forEach(p -> nodeSearched.accept(p));
+			return pathStored;
+		}
+
 		// TODO: Implement this method in WEEK 3
 		GraphNode startNode = new GraphNode(start);
 		GraphNode goalNode = new GraphNode(goal);
@@ -168,6 +199,11 @@ public class MapGraph {
 			HashSet<GeographicPoint> visited = new HashSet<>();
 			visited.add(start);
 			List<GeographicPoint> path = bfsAux(goal, parent, q, visited, nodeSearched);
+
+			// Week 6 -- REQUIRED EXTENSION
+			// Saving in cache the new calculated route
+			this.routesStored.storeRoute(start, goal, path);
+
 			return path;
 		} else return new ArrayList<>();
 	}
@@ -263,6 +299,14 @@ public class MapGraph {
 	 * // If we get here then there's no path
 	 */
 	public List<GeographicPoint> dijkstra(GeographicPoint start, GeographicPoint goal, Consumer<GeographicPoint> nodeSearched) {
+		// Week 6 -- REQUIRED EXTENSION
+		// If the route already exists, return pathStored
+		List<GeographicPoint> pathStored = getRoute(start, goal);
+		if(pathStored != null) {
+			pathStored.forEach(p -> nodeSearched.accept(p));
+			return pathStored;
+		}
+
 		// TODO: Implement this method in WEEK 4
 		// Hook for visualization.  See writeup.
 		//nodeSearched.accept(next.getLocation());
@@ -275,6 +319,11 @@ public class MapGraph {
 			startNode.setToGoal(0);
 			pq.add(startNode);
 			List<GeographicPoint> path = dijkstraAux(goal, parent, pq, visited, nodeSearched);
+
+			// Week 6 -- REQUIRED EXTENSION
+			// Saving in cache the new calculated route
+			this.routesStored.storeRoute(start, goal, path);
+
 			return path;
 		} else return new ArrayList<>();
 	}
@@ -371,8 +420,15 @@ public class MapGraph {
 	 * 	 * // If we get here then there's no path
 	 */
 	public List<GeographicPoint> aStarSearch(GeographicPoint start, GeographicPoint goal, Consumer<GeographicPoint> nodeSearched) {
-		// TODO: Implement this method in WEEK 4
+		// Week 6 -- REQUIRED EXTENSION
+		// If the route already exists, return pathStored
+		List<GeographicPoint> pathStored = getRoute(start, goal);
+		if(pathStored != null) {
+			pathStored.forEach(p -> nodeSearched.accept(p));
+			return pathStored;
+		}
 
+		// TODO: Implement this method in WEEK 4
 		GraphNode startNode = new GraphNode(start);
 		GraphNode goalNode = new GraphNode(goal);
 		startNode.setStimatedDistance(goal);
@@ -384,6 +440,11 @@ public class MapGraph {
 			startNode.setToGoal(0);
 			pq.add(startNode);
 			List<GeographicPoint> path = aStarSearchAux(goal, parent, pq, visited, nodeSearched);
+
+			// Week 6 -- REQUIRED EXTENSION
+			// Saving in cache the new calculated route
+			this.routesStored.storeRoute(start, goal, path);
+
 			return path;
 		} else return new ArrayList<>();
 	}
