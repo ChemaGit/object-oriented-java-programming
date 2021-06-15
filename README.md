@@ -62,6 +62,18 @@ in the real world and to provide tiered levels of support to meet your personal 
 ````
 
 ### Course 4: Mastering the Software Engineering Interview
+````text
+You’ve hit a major milestone as a computer scientist and are becoming a capable programmer. 
+You now know how to solve problems, write algorithms, and analyze solutions; and you have a wealth of tools (like data structures) at your disposal.  
+You may now be ready for an internship or (possibly) an entry-level software engineering job.  
+But can you land the internship/job?  It depends in part on how well you can solve new technical problems and communicate during interviews.  
+How can you get better at this?  Practice!  
+
+With the support of Google’s recruiting and engineering teams we’ve provided tips, examples, 
+and practice opportunities in this course that may help you with a number of tech companies.  
+We’ll assist you to organize into teams to practice.  
+Lastly, we’ll give you basic job search advice, and tips for succeeding once you’re on the job.
+````
 
 ### Course 5: Capstone: Analyzing (Social) Network Data
 
