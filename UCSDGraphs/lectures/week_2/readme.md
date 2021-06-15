@@ -1,0 +1,11 @@
+- Describe how a 2D maze problem can be represented as a graph 
+- Represent a geographic map as a graph
+- Perform Depth-first Search (DFS) and Breadth-first search (BFS) on a graph
+- Implement the code for DFS and BFS
+- Analyze and compare the worst-case running time of DFS and BFS
+- Describe how the ADTs Stack and Queue work 
+- Describe how Stacks are used in DFS and how Queues are used in BFS
+- Design classes to represent a grid-based graph 
+- Explain the concepts of redesign and refactoring
+- Critique aspects of code design 
+- Redesign and refactor code for better design

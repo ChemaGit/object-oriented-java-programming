@@ -1,0 +1,430 @@
+Comments:
+	1. You should remove all "System.out.println" statements because its purpose is for debugging.
+	2. You should remove variables that you don't use in your code:
+		static final double DEFAULT_LENGTH = 0.01 in MapEdge
+	3. You don't need this variables, and you don't use these variables in class MapNode:
+		/** the predicted distance of this node (used in Week 3 algorithms) */
+		private double distance;
+		
+		/** the actual distance of this node from start (used in Week 4 algorithms) */
+		private double actualDistance;
+	
+	so you should remove these variables and the related code to them.
+
+	In class MapEdge for this purpose you have: 
+		/** The length of the road segment, in km */
+		private double length;
+	It should be enough.
+
+	You don't use this variable, you shoud remove this variable and its related code.
+
+	4. You don't explain your breadth first search(bfs) algorithm.
+	   You should explain with clarity complex algorithms.
+
+	5. A readme.md document would have been useful.
+
+	6. Method addEdge throws NullPointerException and it should throw an IllegalArgumentException 
+	and you don't check all the preconditions
+
+	 * @throws IllegalArgumentException If the points have not already been
+	 *   added as nodes to the graph, if any of the arguments is null,
+	 *   or if the length is less than 0.
+
+**********************************************************************************************
+Comments:
+	1. You should remove methods or variables that you don't use in your code:
+		public int getLength() in class MapGraphNode
+
+	2. All members in class MapGraphEdge are public. You should make them private and 
+	implement their correspondent getters and setters.
+
+	3. I believe that this two variables are not neccessary in your code:
+		private List<MapGraphEdge> inedges;
+		private List<MapGraphEdge> outedges;
+	Since an edge has a start and an end.
+
+	4. You don't explain your breadth first search(bfs) algorithm and it is hard to understand.
+	5. Your code is very complicated and very hard to read. You could try to refactor your code and make it simpler than it is.
+	An example of this point would be the method "buildPath" in class MapGraph.java. This method is much simpler.
+
+**********************************************************************************************
+Comments:
+	1. Methods and Functions names always start with a lowercase letter. In your MapNode class you didn't do that.
+	It is a convention, but there are good reasons for this:
+		GetLocation, GetEdges, InsertEdges
+		https://www.tutorialspoint.com/CamelCase-in-Java-naming-conventions
+
+	2. You should make all variables class members private, in MapGraph class you didn't do this:
+		List<MapNode> vertices;
+	And I believe you don't need this variable at all because you have all your vertices in a map.
+	You should remove all spare variables.
+
+	3. There are a few preconditions that you don't follow in the method MapGraph.addEdge:
+
+	@throws IllegalArgumentException If the points have not already been added as
+	                          nodes to the graph, 
+				  --> "if any of the arguments is null, or if the length is less than 0."
+
+	4. You didn't describe your breadth first search(bfs) algorithm and it is quite hard to understand.
+	It's a good practice to explain methods that has complicated algorithms.
+
+**********************************************************************************************
+Comments:
+	1. You don't need a for loop in order to recover an element from a HashSet:
+
+	public Node locToNode(GeographicPoint loc)
+	{
+		for(Node node : nodes)
+		{
+			if(node.getNodeLocation().equals(loc))
+				return node;
+		}
+		return null;
+	}
+
+	You have a built-in methods in HashSet to do that.
+
+	2. You have duplicate code in your design, for example:
+
+	public double getDist(Node begin, Node end) {
+		for(Edge edge : edges) {
+			Node starting = edge.getStartingNode();
+			Node ending = edge.getEndingNode();
+			if(starting.equals(begin) && ending.equals(end)) {
+				return edge.getRoadLength();
+			}
+		}
+		return -1;
+	}
+
+	You don't need this method in AllEdges.class, indeed you don't need this class at all.
+	You already store this value in Edge.class.
+
+	3. A better design approach would be a HashMap to store your Graph in MapGraph class.
+	In this way you could remove AllNodes and AllEdges in order to refactor your code.
+
+	4. You didn't describe your breadth first search(bfs) algorithm and it is quite hard to understand.
+	It's a good practice to explain methods that has complicated algorithms.
+
+
+**********************************************************************************************
+Comments:
+	1. Variables, Methods and Functions names always start with a lowercase letter. 
+		In your MapGraph class you didn't do that.
+		It is a convention, but there are good reasons for this:
+
+			https://www.tutorialspoint.com/CamelCase-in-Java-naming-conventions
+
+		private List<MapVertex> ListofVertices;     		
+		private HashMap<MapVertex, List<MapEdge>> InArcs;	
+		private HashMap<MapVertex, List<MapEdge>> OutArcs;  
+		private int NumVertices;		
+		private int NumEdges;
+
+	2. You could remove this variable because you don't use it at all:
+		
+		private HashMap<MapVertex, List<MapEdge>> InArcs;	// maps a vertex to all incoming edges 
+
+	Refactor your code is a very good practice in order to make your code easier to read and maintain.
+
+	3. You didn't describe your breadth first search(bfs) algorithm and it is quite hard to understand.
+	It's a good practice to explain methods that has complicated algorithms.
+
+	4. In method private void checkEdge lenth == 0 is a valid length so this condition is not good enough
+	
+		if(length<=0 
+
+	because you throw an IllegalArgumentException when you don't have to.
+
+		 * @throws IllegalArgumentException If the points have not already been
+		 *   added as nodes to the graph, if any of the arguments is null,
+		 *   or if the length is "less than 0".
+		 */
+
+**********************************************************************************************
+Comments:
+
+	1. This precondition is not true in method addVertex in MapGraph class: 
+
+		* @throws IllegalArgumentException if the location is null
+
+	The precondition is: 
+	 * @return true if a node was added, false if it was not (the node
+	 * was already in the graph, or the parameter is null).
+
+	You should return null no throw an IllegalArgumentException
+
+	2. You shoud review this method:
+
+	private boolean isValidEdgeInfo(GeographicPoint from, GeographicPoint to, String roadName,
+									String roadType, double length){
+		return isValidPoints(from, to)||
+				roadName != null || !roadName.equals("") ||
+				roadType != null || !roadType.equals("") || length >= 0 ;
+	}
+
+	I believe this method don't do what you think:
+
+		a) A roadName could be "", it cannot be null
+		b) A roadType could be "", it cannot be null
+		c) All preconditions are to be true, so:
+
+		if(isValidPoints(from, to)) && roadName != null && roadType != null && length >= 0) I will do stuff
+		else throw IllegalArgumentException
+
+		In your code if one of the preconditions is true and the rest is false the method will return true,
+		and that is not the behavior we expect.
+
+	3. You didn't describe your breadth first search(bfs) algorithm and it is quite hard to understand.
+	It's a good practice to explain methods that has complicated algorithms.
+
+
+**********************************************************************************************
+Comments:
+	1. In method addEdge from MapGraph class you don't check if String roadName is null, and you should.
+
+	2. In MapNode class I believe you don't need the two variables:
+
+			neighbors = new ArrayList<MapNode>();
+			edges = new ArrayList<MapEdge>();
+
+	with one of them would be enough for this assignment.
+
+	3. This variable:
+
+		HashMap<GeographicPoint, MapNode> vertices;
+
+	must be private no public in MapGraph class.
+
+**********************************************************************************************
+Comments:
+
+	1. In method addEdge from MapGraph.java you don't check nulls for 
+
+		String roadName, String roadType variables
+	and you should check them out.
+
+	2. You didn't describe your breadth first search(bfs) algorithm good enough and it is quite hard to understand.
+	It's a good practice to explain methods that has complicated algorithms.
+
+	3. In order to refactor your code a bit, I believe you don't need this variable
+
+		 private HashSet<MapEdge> edges;
+
+	You already have the edges for each node in MapNode class.
+
+
+**********************************************************************************************
+Comments:
+	1. Variables, Methods and Functions names always start with a lowercase letter. 
+		In your MapGraph class you didn't do that.
+		It is a convention, but there are good reasons for this:
+
+			https://www.tutorialspoint.com/CamelCase-in-Java-naming-conventions
+
+		private List<MapVertex> ListofVertices;     		
+		private HashMap<MapVertex, List<MapEdge>> InArcs;	
+		private HashMap<MapVertex, List<MapEdge>> OutArcs;  
+		private int NumVertices;		
+		private int NumEdges;
+
+
+
+	2. You could remove this variable because you don't use it at all:
+		
+		private HashMap<MapVertex, List<MapEdge>> InArcs;	// maps a vertex to all incoming edges 
+
+	Refactor your code is a very good practice in order to make your code easier to read and maintain.
+
+	3. In method private void checkEdge lenth == 0 is a valid length so this condition is not good enough
+	
+		if(length<=0 
+
+	because you throw an IllegalArgumentException when you don't have to.
+
+		 * @throws IllegalArgumentException If the points have not already been
+		 *   added as nodes to the graph, if any of the arguments is null,
+		 *   or if the length is "less than 0".
+		 */
+
+
+**********************************************************************************************
+Comments:
+
+	1. In method addEdge from MapGraph.java you don't check nulls for 
+
+		String roadName, String roadType variables and you should check them out.
+
+	And you are throwing a "NullPointerException" instead you should throw an "IllegalArgumentException"
+
+	 * @throws IllegalArgumentException If the points have not already been
+	 *   added as nodes to the graph, if any of the arguments is null,
+	 *   or if the length is less than 0.
+	 */
+
+	2. You didn't describe your breadth first search(bfs) algorithm good enough and it is quite hard to understand.
+	It's a good practice to explain methods that has complicated algorithms.
+
+	3. In MapGraph class members like:
+
+		HashMap<GeographicPoint, MapNode> pointNodeMap;
+		HashSet<MapEdge> edges;
+
+	should be private no public. You should be careful with this.
+
+
+**********************************************************************************************
+Comments:
+
+	1. You didn't describe your breadth first search(bfs) algorithm good enough and it is quite hard to understand.
+	It's a good practice to explain methods that has complicated algorithms.
+
+
+**********************************************************************************************
+Comments:
+
+	1. You don't need a for loop in method "getVertices" in orger to get the keys from a HashMap.
+	You have built-in methods to do that.
+
+	2. Comments in your code has to be meaningful. In method getVertices() 
+	   I believe this comment doesn't make sense.
+
+		//count all unique nodes in the graph hashmap
+
+	3. In method getNumEdges, you don't need a for loop for each list in the Map
+
+		for (GeographicPoint p : graph.get(point)) {
+
+	You have built-in methods to do that.
+
+	4. You don't do a good representation of a "Geographic Map" in your code. For example:
+	In order to represent an Edge you don't use the information that you get from the parameters:
+
+		GeographicPoint from, GeographicPoint to, String roadName,String roadType, double length
+
+	5. You shoud divide the method "public List<GeographicPoint> bfs(GeographicPoint start, GeographicPoint goal, Consumer<GeographicPoint> nodeSearched)"
+	in several private methods, for example:
+	
+		a) bfs: in order to implement breadth first search(bfs) algorithm.
+		b) findPath: in order to get the list of intersections that form the shortest (unweighted) path from start to goal (including both start and goal).
+
+
+	6. You didn't describe your breadth first search(bfs) algorithm good enough and it is quite hard to understand.
+	It's a good practice to explain methods that has complicated algorithms.
+
+
+**********************************************************************************************
+Comments:
+
+	1. You didn't describe your breadth first search(bfs) algorithm good enough and it is quite hard to understand.
+	It's a good practice to explain methods that has complicated algorithms.
+
+	2. Method addEdge doesn't check all the preconditions
+
+	 * @throws IllegalArgumentException If the points have not already been
+	 *   added as nodes to the graph, if any of the arguments is null,
+	 *   or if the length is less than 0.
+
+	and this check "if(length <= 0){" in the method is wrong because length can be zero.
+
+
+
+
+
+**********************************************************************************************
+Comments:
+	1. Overall, very nice job.
+
+	2. However, maybe I would remove in MapGraph class the variable: 
+
+		private HashSet<GeographicPoint> vertices;
+
+	I think is redundant and above all it takes resources like memory, cpu, etc....
+
+	3. In Street class there aren't all getters and setters for each class member and 
+	I don't see the point of this decision.
+
+**********************************************************************************************
+Comments:
+
+	1. Method addEdge doesn't check all the preconditions in class MapGraph
+
+	 * @throws IllegalArgumentException If the points have not already been
+	 *   added as nodes to the graph, if any of the arguments is null,
+	 *   or if the length is less than 0.
+
+	and it is throwing NullPointerException instead of IllegalArgumentException
+
+	2. You didn't describe your breadth first search(bfs) algorithm good enough and it is quite hard to understand.
+	It's a good practice to explain methods that has complicated algorithms.
+
+**********************************************************************************************
+Comments:
+
+	1. In class MapRoad you don't create getters and setters in order to retrieve and set class members safely.
+	   You cannot use this class properly and its fields.
+
+**********************************************************************************************
+Comments:
+
+	1. In MapGraph this variable could be private instead of public:
+
+		HashMap <GeographicPoint, MapNode> nodes;
+
+	2. Method addEdge doesn't check all the preconditions in class MapGraph
+
+	 * @throws IllegalArgumentException If the points have not already been
+	 *   added as nodes to the graph, if any of the arguments is null,
+	 *   or if the length is less than 0.
+
+	and it is throwing NullPointerException instead of IllegalArgumentException
+
+	3. You didn't describe your breadth first search(bfs) algorithm good enough and it is quite hard to understand.
+	It's a good practice to explain methods that has complicated algorithms.
+
+**********************************************************************************************
+Comments:
+
+	1. You missed a member of the representation of an edge in class MapEdge:
+
+		String streetType
+
+	2. You didn't describe your breadth first search(bfs) algorithm good enough and it is quite hard to understand.
+	It's a good practice to explain methods that has complicated algorithms.
+
+**********************************************************************************************
+Comments:
+
+	1. Method addEdge doesn't check all the preconditions in class MapGraph
+
+	 * @throws IllegalArgumentException If the points have not already been
+	 *   added as nodes to the graph, if any of the arguments is null,
+	 *   or if the length is less than 0.
+
+	you missed String roadName and String roadType that could be nulls.
+
+
+**********************************************************************************************
+Comments: Overall, very great job. You rock.
+
+	1. You didn't describe your breadth first search(bfs) algorithm good enough and it is quite hard to understand.
+	It's a good practice to explain methods that has complicated algorithms.
+
+	2. I would have liked more inline comments in order to explain the code.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
