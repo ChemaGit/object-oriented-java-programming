@@ -1,7 +1,7 @@
 # WHAT IS A SOFTWARE ENGINEERING INTERVIEW
 
 #### By the end of this week, you will be able to...
-```text      
+```text
  - Describe common components of the application/interview process
  - Recognize common interview formats
  - Describe methods and resources for preparing for the interview
@@ -22,7 +22,9 @@
 - Interview Questions:
     - Cracking the coding interview by Gayle Laakmann McDowell
 - Data Structures and Algorithms Reference:
-    - [Open Data Structures](http://opendatastructures.org/)
+```
+   [OpenDataStructures](http://opendatastructures.org/)
+```text
     - Introduction to Algorithms by Carmen, Leiserson, Rivest and Stain
     - Algorithms by Dasgupta, Papadimitriou, and Vazirani
 - Effective Programming Reference:

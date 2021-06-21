@@ -19,7 +19,7 @@ once you’re on the job.
 ```
 
 #### After completing this course, you will be able to...
-```text     
+```text
  - Evaluate successful interview and job skills both on technical and soft-skill merit
 
  - Recognize the value of soft skills in Computer Science
@@ -40,7 +40,7 @@ once you’re on the job.
 ```
 
 #### Skills you will gain
-```text  
+```text
  - Live Coding
 
  - Programming Interview
