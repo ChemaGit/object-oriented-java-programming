@@ -507,7 +507,7 @@ public class CapGraph implements Graph {
 //		});
 
 		/**
-		 * SET COVER PROBLEM
+		 * SET COVER PROBLEM (BIG STEP GREEDY ALGORITHM TEST)
 		 */
 		Graph graphFacebook = new CapGraph();
 		GraphLoader.loadGraph(graphFacebook, "/home/centos/eclipse-workspace/object-oriented-java-programming/UCSDCapstoneCode/SocialNetworks/data/data_set_cover_c.txt");
