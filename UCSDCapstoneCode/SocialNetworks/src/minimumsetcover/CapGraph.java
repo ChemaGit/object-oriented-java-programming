@@ -486,41 +486,6 @@ public class CapGraph implements Graph {
 	}
 
 	public static void main(String[] args) {
-		/**
-		 * SET COVER PROBLEM
-		 */
-		Graph graphFacebook = new CapGraph();
-		GraphLoader.loadGraph(graphFacebook, "/home/centos/eclipse-workspace/object-oriented-java-programming/UCSDCapstoneCode/SocialNetworks/data/data_set_cover_c.txt");
-		System.out.println("Testing the number of Vertices and Edges in the Facebook Graph");
-		int numVertices = graphFacebook.getNumVertices();
-		int numEdges = graphFacebook.getNumEdges();
-		System.out.println("Number of Vertices: " + numVertices);
-		System.out.println("Number of Edges: " + numEdges);
-		System.out.println();
-		System.out.println("Finding a dominant set in the Facebook Graph");
-		Set<Node> dominanSet = graphFacebook.findDominantSet();
-		int size = dominanSet.size();
-		System.out.println("The number of vertices in the dominant set is: " + size);
-//		dominanSet.forEach(node -> {
-//			System.out.print("Node:" + node.getIdNode() + " ");
-//		});
-
-//		Graph graphMyDataSccB = new CapGraph();
-//		GraphLoader.loadGraph(graphMyDataSccB, "/home/centos/eclipse-workspace/object-oriented-java-programming/UCSDCapstoneCode/SocialNetworks/data/my_data_scc_b.txt");
-//		System.out.println("Testing the number of Vertices and Edges in the my_data_scc_b Graph");
-//		numVertices = graphMyDataSccB.getNumVertices();
-//		numEdges = graphMyDataSccB.getNumEdges();
-//		System.out.println("Number of Vertices: " + numVertices);
-//		System.out.println("Number of Edges: " + numEdges);
-//		System.out.println();
-//		System.out.println("Finding a dominant set in the my_data_scc_b Graph");
-//		dominanSet.clear();
-//		dominanSet.addAll(graphMyDataSccB.findDominantSet());
-//		size = dominanSet.size();
-//		System.out.println("The number of vertices in the dominant set is: " + size);
-//		dominanSet.forEach(node -> {
-//			System.out.print("Node:" + node.getIdNode() + " ");
-//		});
 
 		/**
 		 * MINIMUM SET COVER PROBLEM
