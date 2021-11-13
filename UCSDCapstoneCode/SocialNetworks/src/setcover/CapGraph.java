@@ -9,7 +9,7 @@ import java.util.*;
 
 /**
  * @author Jose María.
- * 
+ *
  * For the warm up assignment, you must implement your Graph in a class
  * named CapGraph.  Here is the stub file.
  * In order to represent a Graph I used an adjacency list representation.
@@ -310,7 +310,7 @@ public class CapGraph implements Graph {
 
 	/**
 	 * CAPSTONE PROJECT
-	 * Methods in order to resolver the easy question for the Capstone Project
+	 * Methods in order to resolve the easy question for the Capstone Project
 	 * Find a dominant set in a Graph
 	 *
 	 * I implemented a greedy algorithm in order to resolve the set dominant problem,
@@ -345,7 +345,7 @@ public class CapGraph implements Graph {
 	 * @param dominantSet
 	 * @return
 	 */
-	public Set<Node> buildDominantset(HashSet<Node> vertices, HashSet<Node> dominantSet, HashSet<Node> coveredVertices) {
+	public Set<Node> buildDominantSet(HashSet<Node> vertices, HashSet<Node> dominantSet, HashSet<Node> coveredVertices) {
 		if(vertices.isEmpty()) return dominantSet;
 		else {
 			// Finding the greatest set of uncovered vertices
@@ -363,7 +363,7 @@ public class CapGraph implements Graph {
 			coveredVertices.addAll(nodes);
 			dominantSet.addAll(n);
 			vertices.removeAll(nodes);
-			return buildDominantset(vertices, dominantSet, coveredVertices);
+			return buildDominantSet(vertices, dominantSet, coveredVertices);
 		}
 	}
 
@@ -378,24 +378,168 @@ public class CapGraph implements Graph {
 	public Set<Node> findDominantSet() {
 		// First: we get all the graph vertices. Complexity O(1)
 		HashSet<Node> vertices = getAllVertices();
-		return buildDominantset(vertices, new HashSet<Node>(), new HashSet<Node>());
+		return buildDominantSet(vertices, new HashSet<Node>(), new HashSet<Node>());
+	}
+
+	/**
+	 * HARD QUESTION: MINIMUM DOMINANT SET
+	 * Methods in order to resolve the hard question of the Capstone Project
+	 * Finding a Minimum dominant set in a Graph
+	 * @return
+	 */
+
+
+	/**
+	 * Method that returns a Set of nodes from a List of Edges
+	 * @param edges
+	 * @return
+	 */
+	public Set<Node> getNodesFromEdges(Node node, ArrayList<Edge> edges) {
+		Set<Node> nodes = new HashSet<>();
+		nodes.add(node);
+		edges.forEach(edge -> {
+			nodes.add(new Node(edge.getEnd()));
+		});
+		return nodes;
+	}
+
+
+	/**
+	 * Method that looks for the union of two vertices with the greatest number
+	 * of uncovered nodes. Returns a Set with these two nodes.
+	 * @return
+	 */
+	public Set<Node> getUnionTwoNodesMaximized(List<Node> vertices, HashSet<Node> coveredVertices, HashSet<Node> union, int[] max) {
+		if(vertices.isEmpty()) return union;
+		else if(vertices.size() < 2) {
+			Node node = vertices.get(0);
+			Set<Node> n1 = this.getNodesFromEdges(node, this.getNeighbors(node));
+			n1.removeAll(coveredVertices);
+			if(n1.size() > max[0]) {
+				max[0] = n1.size();
+				union.clear();
+				union.add(node);
+			}
+			return union;
+		}
+		else {
+			Node node = vertices.remove(0);
+			vertices.forEach(node1 -> {
+				Set<Node> n1 = this.getNodesFromEdges(node, this.getNeighbors(node));
+				Set<Node> n2 = this.getNodesFromEdges(node1, this.getNeighbors(node1));
+				n1.addAll(n2);
+				n1.removeAll(coveredVertices);
+				if(n1.size() > max[0]) {
+					max[0] = n1.size();
+					union.clear();
+					union.add(node);
+					union.add(node1);
+				}
+			});
+			return getUnionTwoNodesMaximized(vertices, coveredVertices, union, max);
+		}
+	}
+
+	/**
+	 * Recursive method in order to build the minimum dominant set
+	 * This method iterates over the set of vertices. It stops when
+	 * the set is empty, returning the minimum dominant set in the graph
+	 * This is called the Big step greedy algorithm
+	 * References: https://arxiv.org/pdf/1506.04220.pdf
+	 * @param vertices
+	 * @param dominantSet
+	 * @param coveredVertices
+	 * @return
+	 */
+	public Set<Node> buildMinimumDominantSet(HashSet<Node> vertices, HashSet<Node> dominantSet, HashSet<Node> coveredVertices) {
+		if(vertices.isEmpty()) return dominantSet;
+		if(vertices.size() <= 2) {
+			dominantSet.addAll(vertices);
+			return dominantSet;
+		}
+		else {
+			// We have to find in "vertices" the union of two nodes that has the biggest number of uncovered nodes
+			int[] max = {0};
+			Set<Node> union = getUnionTwoNodesMaximized(new ArrayList<>(vertices), coveredVertices,new HashSet<>(), max);
+			dominantSet.addAll(union);
+			coveredVertices.addAll(union);
+			vertices.removeAll(union);
+			union.forEach(node -> {
+				Set<Node> neighbors = this.getNodesFromEdges(node, this.getNeighbors(node));
+				vertices.removeAll(neighbors);
+				coveredVertices.addAll(neighbors);
+			});
+			return buildMinimumDominantSet(vertices, dominantSet, coveredVertices);
+		}
+	}
+
+	/**
+	 * Method to find the Minimum dominant set in a Graph
+	 * Returns a set of Nodes that represents The Minimum set
+	 * @return
+	 */
+	@Override
+	public Set<Node> findMinimumDominantSet() {
+		// First: we get all the graph vertices. Complexity O(1)
+		HashSet<Node> vertices = getAllVertices();
+		return buildMinimumDominantSet(vertices, new HashSet<Node>(), new HashSet<Node>());
 	}
 
 	public static void main(String[] args) {
+		/**
+		 * SET COVER PROBLEM
+		 */
 		Graph graphFacebook = new CapGraph();
-		GraphLoader.loadGraph(graphFacebook, "/home/centos/eclipse-workspace/object-oriented-java-programming/UCSDCapstoneCode/SocialNetworks/data/facebook_1000.txt");
+		GraphLoader.loadGraph(graphFacebook, "/home/centos/eclipse-workspace/object-oriented-java-programming/UCSDCapstoneCode/SocialNetworks/data/data_set_cover_c.txt");
 		System.out.println("Testing the number of Vertices and Edges in the Facebook Graph");
 		int numVertices = graphFacebook.getNumVertices();
 		int numEdges = graphFacebook.getNumEdges();
 		System.out.println("Number of Vertices: " + numVertices);
 		System.out.println("Number of Edges: " + numEdges);
 		System.out.println();
-		System.out.println("Finding the dominant set in the Facebook Graph");
+		System.out.println("Finding a dominant set in the Facebook Graph");
 		Set<Node> dominanSet = graphFacebook.findDominantSet();
 		int size = dominanSet.size();
 		System.out.println("The number of vertices in the dominant set is: " + size);
-		dominanSet.forEach(node -> {
-			System.out.print("Node:" + node.getIdNode() + " ");
-		});
+//		dominanSet.forEach(node -> {
+//			System.out.print("Node:" + node.getIdNode() + " ");
+//		});
+
+//		Graph graphMyDataSccB = new CapGraph();
+//		GraphLoader.loadGraph(graphMyDataSccB, "/home/centos/eclipse-workspace/object-oriented-java-programming/UCSDCapstoneCode/SocialNetworks/data/my_data_scc_b.txt");
+//		System.out.println("Testing the number of Vertices and Edges in the my_data_scc_b Graph");
+//		numVertices = graphMyDataSccB.getNumVertices();
+//		numEdges = graphMyDataSccB.getNumEdges();
+//		System.out.println("Number of Vertices: " + numVertices);
+//		System.out.println("Number of Edges: " + numEdges);
+//		System.out.println();
+//		System.out.println("Finding a dominant set in the my_data_scc_b Graph");
+//		dominanSet.clear();
+//		dominanSet.addAll(graphMyDataSccB.findDominantSet());
+//		size = dominanSet.size();
+//		System.out.println("The number of vertices in the dominant set is: " + size);
+//		dominanSet.forEach(node -> {
+//			System.out.print("Node:" + node.getIdNode() + " ");
+//		});
+
+		/**
+		 * MINIMUM SET COVER PROBLEM
+		 */
+		System.out.println("\n\n");
+		Graph graphFacebookM = new CapGraph();
+		GraphLoader.loadGraph(graphFacebookM, "/home/centos/eclipse-workspace/object-oriented-java-programming/UCSDCapstoneCode/SocialNetworks/data/data_set_cover_c.txt");
+		System.out.println("Testing the number of Vertices and Edges in the Facebook Graph");
+		int numVerticesM = graphFacebookM.getNumVertices();
+		int numEdgesM = graphFacebookM.getNumEdges();
+		System.out.println("Number of Vertices: " + numVerticesM);
+		System.out.println("Number of Edges: " + numEdgesM);
+		System.out.println();
+		System.out.println("Finding the minimum dominant set in the Facebook Graph");
+		Set<Node> minimumDominanSet = graphFacebookM.findMinimumDominantSet();
+		int sizeM = minimumDominanSet.size();
+		System.out.println("The number of vertices in the dominant set is: " + sizeM);
+//		minimumDominanSet.forEach(node -> {
+//			System.out.print("Node:" + node.getIdNode() + " ");
+//		});
 	}
 }
