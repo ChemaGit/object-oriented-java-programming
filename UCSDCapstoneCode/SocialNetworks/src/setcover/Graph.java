@@ -77,14 +77,14 @@ public interface Graph {
     /**
      * Method to find the Minimum dominant set in a Graph
      * Returns a set of Nodes that represents The Minimum set
-     * @return
+     * @return Set<Node>
      */
     Set<Node> bigStepGreedyAlgorithm();
 
     /**
      * Method that looks for the union of two vertices with the greatest number
      * of uncovered nodes. Returns a Set with these two nodes.
-     * @return
+     * @return Set<Node>
      */
     Set<Node> getUnionTwoNodesMaximized(List<Node> vertices, HashSet<Node> coveredVertices, HashSet<Node> union, int[] max);
 } 
