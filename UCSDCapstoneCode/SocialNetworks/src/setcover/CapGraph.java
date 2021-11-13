@@ -474,18 +474,38 @@ public class CapGraph implements Graph {
 	}
 
 	/**
-	 * Method to find the Minimum dominant set in a Graph
+	 * Method to try to find the Minimum dominant set in a Graph
 	 * Returns a set of Nodes that represents The Minimum set
 	 * @return
 	 */
 	@Override
-	public Set<Node> findMinimumDominantSet() {
+	public Set<Node> bigStepGreedyAlgorithm() {
 		// First: we get all the graph vertices. Complexity O(1)
 		HashSet<Node> vertices = getAllVertices();
 		return buildMinimumDominantSet(vertices, new HashSet<Node>(), new HashSet<Node>());
 	}
 
 	public static void main(String[] args) {
+		/**
+		 * MINIMUM SET COVER PROBLEM
+		 */
+		System.out.println("\n\n");
+		Graph graphFacebookM = new CapGraph();
+		GraphLoader.loadGraph(graphFacebookM, "/home/centos/eclipse-workspace/object-oriented-java-programming/UCSDCapstoneCode/SocialNetworks/data/data_set_cover_c.txt");
+		System.out.println("Testing the number of Vertices and Edges in the Facebook Graph");
+		int numVerticesM = graphFacebookM.getNumVertices();
+		int numEdgesM = graphFacebookM.getNumEdges();
+		System.out.println("Number of Vertices: " + numVerticesM);
+		System.out.println("Number of Edges: " + numEdgesM);
+		System.out.println();
+		System.out.println("Finding the minimum dominant set in the Facebook Graph");
+		Set<Node> minimumDominanSet = graphFacebookM.bigStepGreedyAlgorithm();
+		int sizeM = minimumDominanSet.size();
+		System.out.println("The number of vertices in the dominant set is: " + sizeM);
+//		minimumDominanSet.forEach(node -> {
+//			System.out.print("Node:" + node.getIdNode() + " ");
+//		});
+
 		/**
 		 * SET COVER PROBLEM
 		 */
@@ -522,24 +542,5 @@ public class CapGraph implements Graph {
 //			System.out.print("Node:" + node.getIdNode() + " ");
 //		});
 
-		/**
-		 * MINIMUM SET COVER PROBLEM
-		 */
-		System.out.println("\n\n");
-		Graph graphFacebookM = new CapGraph();
-		GraphLoader.loadGraph(graphFacebookM, "/home/centos/eclipse-workspace/object-oriented-java-programming/UCSDCapstoneCode/SocialNetworks/data/data_set_cover_c.txt");
-		System.out.println("Testing the number of Vertices and Edges in the Facebook Graph");
-		int numVerticesM = graphFacebookM.getNumVertices();
-		int numEdgesM = graphFacebookM.getNumEdges();
-		System.out.println("Number of Vertices: " + numVerticesM);
-		System.out.println("Number of Edges: " + numEdgesM);
-		System.out.println();
-		System.out.println("Finding the minimum dominant set in the Facebook Graph");
-		Set<Node> minimumDominanSet = graphFacebookM.findMinimumDominantSet();
-		int sizeM = minimumDominanSet.size();
-		System.out.println("The number of vertices in the dominant set is: " + sizeM);
-//		minimumDominanSet.forEach(node -> {
-//			System.out.print("Node:" + node.getIdNode() + " ");
-//		});
 	}
 }

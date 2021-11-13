@@ -79,7 +79,7 @@ public interface Graph {
      * Returns a set of Nodes that represents The Minimum set
      * @return
      */
-    Set<Node> findMinimumDominantSet();
+    Set<Node> bigStepGreedyAlgorithm();
 
     /**
      * Method that looks for the union of two vertices with the greatest number
